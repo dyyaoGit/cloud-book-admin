@@ -7,7 +7,7 @@ const md5 = require('md5')
 
 
 router.post('/user', auth, async (req, res) => { // 添加管理员
-    let {username, avatar='', desc='', password} = req.body
+    let {username, avatar = '', desc = '', password} = req.body
 
     if (!avatar) {
         const baseURI = 'http://pbl.yaojunrong.com/avatar'
@@ -62,6 +62,15 @@ router.delete('/user', auth, async (req, res) => { // 删除管理员
     })
 })
 
+router.get('/user', auth, async (req, res) => { // 获取管理员
+    const userId = req.session.user._id
+    const data = await userModel.find({_id: {$ne: userId}}, {password: 0})
+    res.json({
+        code: 200,
+        data
+    })
+})
+
 router.post('/login', async (req, res) => {
     const {username, password} = req.body
     const userInfo = await userModel.findOne({username})
@@ -79,7 +88,6 @@ router.post('/login', async (req, res) => {
         })
     }
 })
-
 
 
 module.exports = router
