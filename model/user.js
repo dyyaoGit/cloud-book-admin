@@ -1,33 +1,22 @@
 const mongoose = require("mongoose")
 
-const user = new mongoose.Schema({
-    username: String,
-    avatar: String,
-    open_id: {
-        type: String,
-        unique: true
-    },
-    desc: {
+const adminUser = new mongoose.Schema({
+    username: {
+        index: true,
         type: String
     },
-    session_key: String,
-    fans: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: 'user'
-        }
-    ],
-    attentions: [
-        {
-            type: mongoose.SchemaTypes.ObjectId,
-            ref: 'user'
-        }
-    ],
-    collected: {
-        type: Number,
-        default: 0
+    avatar: String,
+    desc: {
+        type: String,
+        default: '我的后台系统我做主'
+    },
+    password: {
+        type: String,
+        require: true
+    },
+    email: {
+        type: String
     }
-
 },{versionKey: false, timestamps: {createdAt: 'createdTime', updatedAt: 'updatedTime'}})
 
-module.exports = mongoose.model("user",user)
+module.exports = mongoose.model("adminUser",adminUser)
