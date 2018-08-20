@@ -94,12 +94,28 @@ exports.getBookById = async (req, res) => {
         const data = await book.findById(ctx.params.id)
         const titles = await titleModel.find({bookId: ctx.params.id})
         const isCollect = bookCollectionData ? 1 : 0
-        req.json({
+        res.json({
             code: 200,
             data,
             length: titles.length
         })
     }
+}
+
+exports.changeBook = async (req,res) => {
+    let {book_id, index, title, author, img, desc, type} = req.body
+
+    index = parseInt(index)
+    const bookData = await book.findById(book_id) // 找到一本书的实例
+    await category.updateOne({_id: bookData.type}, {$pull: {books: bookData._id}}) // 删除原来分类当中的书
+    await category.updateOne({_id: type}, {$push: {books: bookData._id}}) // 添加到新分类的书当中
+    bookData.set({index, title, author, img, desc, type: ObjectId(type)}) // 更新书的内容
+    await bookData.save() // 存储更新的书籍
+
+    res.json({
+        code: 200,
+        msg: '书籍更新成功'
+    })
 }
 
 

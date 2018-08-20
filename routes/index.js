@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
-const {addBook, getBook, getBookById, getBookByType} = require('../controller/book')
+const express = require('express')
+const router = express.Router()
+const {addBook, getBook, getBookById, getBookByType, changeBook} = require('../controller/book')
+const auth = require('../controller/auth')
 // const category = require('../controller/category')
 // const swiper = require('../controller/swiper')
 // const titles = require('../controller/title')
@@ -12,6 +13,7 @@ const user = require('../controller/user')
 router.post('/book', addBook)
 router.get('/book', getBook)
 router.get('/book/:id', getBookById)
+router.put('/book', auth, changeBook)
 router.use(user)
 
 module.exports = router;

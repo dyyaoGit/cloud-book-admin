@@ -23,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'dyyao',
     cookie: {
-        maxAge: 7200 * 1000
+        maxAge: 1800 * 1000
     },
     resave: true,
     saveUninitialized: false,
