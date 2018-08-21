@@ -99,6 +99,10 @@ router.put('/category/:id', auth, async (req, res) => { // 修改分类
     index = parseInt(index)
     try {
         await categoryModel.updateOne({_id: id}, {title, icon, index})
+        res.json({
+            code: 200,
+            msg: '分类修改成功'
+        })
     } catch (err) {
         res.json({
             code: 400,
