@@ -71,35 +71,20 @@ exports.getBook = async (req,res) => {
     })
 }
 
-exports.getBookById = async (req, res) => {
-    //判断用户是否登陆
-    let token = req.headers.token || ''
-    let bookCollectionData
+exports.getBookById = async (req, res) => { // 获取一本图书
+    const bookId = req.params.id
+    let bookData
+    console.log(req.params)
+
     try {
-        const userData = await decodeToken(token)
-        bookCollectionData = await collectionModel.findOne({
-            user: ObjectId(userData.userId),
-            book: ObjectId(ctx.params.id)
-        })
-        const data = await book.findById(ctx.params.id)
-        const titles = await titleModel.find({bookId: ctx.params.id})
-        const isCollect = bookCollectionData ? 1 : 0
-        ctx.body = {
-            code: 200,
-            data,
-            length: titles.length,
-            isCollect
-        }
-    } catch (err) {
-        const data = await book.findById(ctx.params.id)
-        const titles = await titleModel.find({bookId: ctx.params.id})
-        const isCollect = bookCollectionData ? 1 : 0
-        res.json({
-            code: 200,
-            data,
-            length: titles.length
-        })
+        bookData = await book.findById(bookId)
+    } catch(err) {
+        throw Error(err)
     }
+    res.json({
+        code: 200,
+        data: bookData
+    })
 }
 
 exports.changeBook = async (req,res) => {
