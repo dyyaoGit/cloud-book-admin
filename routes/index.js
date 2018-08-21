@@ -10,7 +10,7 @@ const user = require('../controller/user')
 // const collection = require('../controller/bookCollection')
 // const readList = require('../controller/readList')
 
-router.post('/book', addBook)
+router.post('/book', auth, addBook)
 router.get('/book', getBook)
 router.get('/book/:id', getBookById)
 router.put('/book', auth, changeBook)
