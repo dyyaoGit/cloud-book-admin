@@ -31,7 +31,7 @@ app.use(session({
 }))
 
 
-app.use('/admin', indexRouter);
+app.use('/api/admin', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
