@@ -11,7 +11,8 @@ const categorySchema = new mongoose.Schema({
         unique: true
     },
     icon: {
-        type: String
+        type: String,
+        require: true
     },
     books: [
         {

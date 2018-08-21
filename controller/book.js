@@ -51,7 +51,7 @@ exports.addBook = async (req, res) => {
 
     res.json({
         code: 200,
-        msg: '收到'
+        msg: '添加书籍成功'
     })
 }
 
