@@ -79,7 +79,13 @@ router.post('/login', async (req, res) => {
         req.session.user = userInfo
         res.json({
             code: 200,
-            msg: '登录成功'
+            msg: '登录成功',
+            data: {
+                username: userInfo.username,
+                email: userInfo.email,
+                avatar: userInfo.avatar,
+                desc: userInfo.desc
+            }
         })
     } else {
         res.json({
@@ -87,6 +93,23 @@ router.post('/login', async (req, res) => {
             msg: '用户名密码不正确'
         })
     }
+})
+
+router.get('/logout', (req, res) => {
+
+    if (req.session.user) {
+       req.session.user = null
+        res.json({
+            code: 200,
+            msg: '退出登陆成功'
+        })
+    } else {
+        res.json({
+            code: 400,
+            msg: '未登录状态'
+        })
+    }
+
 })
 
 
