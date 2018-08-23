@@ -3,6 +3,7 @@ const titleModel = require('../model/titles')
 const category = require('../model/category')
 const article = require('../model/articles')
 const collectionModel = require('../model/bookCollection')
+const swiperModel = require('../model/swiper')
 const request = require("request")
 const rq = require("request-promise")
 const cheerio = require("cheerio")
@@ -87,20 +88,43 @@ exports.getBookById = async (req, res) => { // 获取一本图书
     })
 }
 
-exports.changeBook = async (req,res) => {
+exports.changeBook = async (req,res) => { // 修改书籍
     let {book_id, index, title, author, img, desc, type} = req.body
 
     index = parseInt(index)
     const bookData = await book.findById(book_id) // 找到一本书的实例
-    await category.updateOne({_id: bookData.type}, {$pull: {books: bookData._id}}) // 删除原来分类当中的书
-    await category.updateOne({_id: type}, {$push: {books: bookData._id}}) // 添加到新分类的书当中
-    bookData.set({index, title, author, img, desc, type: ObjectId(type)}) // 更新书的内容
-    await bookData.save() // 存储更新的书籍
+    if (type) {
+        await category.updateOne({_id: bookData.type}, {$pull: {books: bookData._id}}) // 删除原来分类当中的书
+        await category.updateOne({_id: type}, {$push: {books: bookData._id}}) // 添加到新分类的书当中
+        bookData.set({index, title, author, img, desc, type: ObjectId(type)}) // 更新书的内容
+        await bookData.save() // 存储更新的书籍
+    } else {
+        bookData.set({index, title, author, img, desc}) // 更新书的内容
+        await bookData.save() // 存储更新的书籍
+    }
 
     res.json({
         code: 200,
         msg: '书籍更新成功'
     })
+}
+
+exports.deleteBook = async (req, res) => { // 删除书籍
+    let {id} = req.params
+
+    let bookItem = await book.findById(id) // 找到一本书
+    await titleModel.remove({bookId: bookItem._id}) // 找到该书对应的所有标题
+    await article.remove({bookId: bookItem._id}) // 删除所有的文章
+    await category.updateOne({_id: bookItem.type}, {$pull: {books: bookItem._id}}) //删除对应分类中的记录
+    await swiperModel.remove({book: bookItem._id}) // 删除对应轮播图当中的书
+    await bookItem.remove()
+    res.json({
+        code: 200,
+        msg: '删除书籍成功'
+    })
+
+
+
 }
 
 

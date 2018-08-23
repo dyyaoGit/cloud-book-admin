@@ -5,6 +5,11 @@ const adminUser = new mongoose.Schema({
         index: true,
         type: String
     },
+    nickname: {
+        type: String,
+        require: true,
+        index: true
+    },
     avatar: String,
     desc: {
         type: String,

@@ -9,8 +9,9 @@ const swiperSchema = mongoose.Schema({
         ref: 'book'
     },
     sort: {
-        type: Number,   //轮播图排序
-        default: 100
+        index: -1,   //轮播图排序
+        default: 1,
+        type: Number
     },
     img: {              //图片地址
         type: String

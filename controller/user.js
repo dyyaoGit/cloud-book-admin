@@ -7,7 +7,7 @@ const md5 = require('md5')
 
 
 router.post('/user', auth, async (req, res) => { // 添加管理员
-    let {username, avatar = '', desc = '', password, email} = req.body
+    let {username, avatar = '', desc = '', password, email, nickname} = req.body
 
     if (!avatar) {
         const baseURI = 'http://pbl.yaojunrong.com/avatar'
@@ -16,7 +16,7 @@ router.post('/user', auth, async (req, res) => { // 添加管理员
 
     if (testPwd(password)) {
         password = md5(password)
-        await userModel.create({username, avatar, desc, password, email})
+        await userModel.create({username, avatar, desc, password, email, nickname})
         res.json({
             code: 200,
             msg: '管理员添加成功'
@@ -58,15 +58,16 @@ router.put('/user/password', auth, async (req, res) => { // 修改密码
 })
 
 router.put('user/userInfo', auth, async (req, res) => { // 修改个人信息
-    let { username, avatar, desc, email} = req.body
+    let { avatar, desc, email, nickname} = req.body
 
-    const userInfo = await userModel.findById(req.session.user._id)
-    userInfo.set({username, avatar, desc, email})
+    const userInfo = await userModel.findById(req.session.user._id, {password: 0})
+    userInfo.set({ avatar, desc, email, nickname})
     try {
         const handleData = await userInfo.save()
         res.json({
             code: 200,
-            msg: '修改个人信息成功'
+            msg: '修改个人信息成功',
+            data: handleData
         })
     } catch (err) {
         res.json({
@@ -96,7 +97,7 @@ router.get('/user', auth, async (req, res) => { // 获取管理员
     })
 })
 
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => { // 登录接口
     const {username, password} = req.body
     const userInfo = await userModel.findOne({username})
 
