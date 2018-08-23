@@ -52,6 +52,25 @@ router.put('/user/password', auth, async (req, res) => { // 修改密码
     }
 })
 
+router.put('user/userInfo', auth, async (req, res) => { // 修改个人信息
+    let { username, avatar, desc, email} = req.body
+
+    const userInfo = await userModel.findById(req.session.user._id)
+    userInfo.set({username, avatar, desc, email})
+    try {
+        const handleData = await userInfo.save()
+        res.json({
+            code: 200,
+            msg: '修改个人信息成功'
+        })
+    } catch (err) {
+        res.json({
+            code: 500,
+            msg: '修改失败，请稍后重试'
+        })
+    }
+})
+
 router.delete('/user', auth, async (req, res) => { // 删除管理员
     const {userIds} = req.body //用户id数组
 
@@ -111,6 +130,5 @@ router.get('/logout', (req, res) => {
     }
 
 })
-
 
 module.exports = router

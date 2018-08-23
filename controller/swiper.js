@@ -1,10 +1,10 @@
-const Router = require('koa-router')
-const router = new Router()
+const {Router} = require('express')
+const router = Router()
 const bookModel = require('../model/book')
 const swiperModel = require('../model/swiper')
 
-router.post('/swiper',async (ctx, next) => {
-    const {title, img, book, sort=100, index = 1} = ctx.request.body
+router.post('/swiper',async (req, res) => { // 插入一张轮播图
+    const {title, img, book, sort=100, index = 1} = req.body
 
     const bookItem = await bookModel.findById(book)
     await swiperModel.create({title, img, book: bookItem._id,sort, index: 1})
@@ -15,7 +15,7 @@ router.post('/swiper',async (ctx, next) => {
 
 })
 
-router.get('/swiper', async (ctx, next) => {
+router.get('/swiper', async (req, res) => { // 获取轮播图列表
 
     let {pn=1,size=10} = ctx.request.query
     pn=parseInt(pn)
@@ -48,4 +48,4 @@ router.get('/swiper/:id', async (ctx, next) => {
 })
 
 
-module.exports = router.routes()
+module.exports = router
