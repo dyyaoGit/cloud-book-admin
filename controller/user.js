@@ -74,6 +74,7 @@ router.put('user/userInfo', auth, async (req, res) => { // 修改个人信息
 router.delete('/user', auth, async (req, res) => { // 删除管理员
     const {userIds} = req.body //用户id数组
 
+    console.log(userIds)
     const data = await userModel.remove({_id: {$in: userIds}})
     res.json({
         code: 200,
