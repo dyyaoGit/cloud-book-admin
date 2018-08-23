@@ -7,7 +7,7 @@ const md5 = require('md5')
 
 
 router.post('/user', auth, async (req, res) => { // 添加管理员
-    let {username, avatar = '', desc = '', password} = req.body
+    let {username, avatar = '', desc = '', password, email} = req.body
 
     if (!avatar) {
         const baseURI = 'http://pbl.yaojunrong.com/avatar'
@@ -16,7 +16,7 @@ router.post('/user', auth, async (req, res) => { // 添加管理员
 
     if (testPwd(password)) {
         password = md5(password)
-        await userModel.create({username, avatar, desc, password})
+        await userModel.create({username, avatar, desc, password, email})
         res.json({
             code: 200,
             msg: '管理员添加成功'
