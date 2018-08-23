@@ -17,7 +17,7 @@ router.post('/swiper',async (req, res) => { // 插入一张轮播图
 
 router.get('/swiper', async (req, res) => { // 获取轮播图列表
 
-    let {pn=1,size=10} = ctx.request.query
+    let {pn=1,size=10} = req.query
     pn=parseInt(pn)
     size=parseInt(size)
 
@@ -28,13 +28,13 @@ router.get('/swiper', async (req, res) => { // 获取轮播图列表
         .limit(size)
         .populate({path: 'book'})
 
-    ctx.body = {
+    res.json({
         code: 200,
         data
-    }
+    })
 })
 
-router.get('/swiper/:id', async (ctx, next) => {
+router.get('/swiper/:id', async (req, res) => {
     const {id} = ctx.params
 
     const data = await swiperModel

@@ -49,6 +49,11 @@ router.put('/user/password', auth, async (req, res) => { // 修改密码
                 msg: '服务器错误，请稍后再试'
             })
         }
+    } else {
+        res.json({
+            code: 400,
+            msg: '原密码错误'
+        })
     }
 })
 
