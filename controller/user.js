@@ -68,7 +68,7 @@ router.put('/user/password', auth, async (req, res) => { // 修改密码
     }
 })
 
-router.put('user/userInfo', auth, async (req, res) => { // 修改个人信息
+router.put('/user/userInfo', auth, async (req, res) => { // 修改个人信息
     let { avatar, desc, email, nickname} = req.body
 
     const userInfo = await userModel.findById(req.session.user._id, {password: 0})
