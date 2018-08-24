@@ -90,7 +90,13 @@ router.post('/user/delete', auth, async (req, res) => { // 删除管理员
 
 router.get('/user', auth, async (req, res) => { // 获取管理员
     const userId = req.session.user._id
-    const data = await userModel.find({_id: {$ne: userId}}, {password: 0})
+    let {pn=1, size=10} = req.query
+    pn = parseInt(pn)
+    size = parseInt(size)
+    const data = await userModel
+        .find({_id: {$ne: userId}}, {password: 0})
+        .limit(size)
+        .skip((pn-1)*size)
     res.json({
         code: 200,
         data
