@@ -151,4 +151,30 @@ router.post('/category/:id/book/:bookid' , auth, async (req, res) => { // 添加
     }
 })
 
+router.delete('category/:id', async (req, res) => { // 删除一个分类
+    const {id} = req.params
+
+    if(id){
+        const categoryItem =  await categoryModel.findById(id)
+        if(categoryItem.books&&categoryItem.books.length>0){
+            const removeData = await categoryItem.remove()
+            await categoryItem.save()
+            res.json({
+                code: 200,
+                msg: `成功删除${removeData.n}个分类`
+            })
+        } else {
+            res.json({
+                code: 200,
+                msg: '该分类下存在图书'
+            })
+        }
+    } else {
+        res.json({
+            code: 400,
+            msg: '缺少必要参数'
+        })
+    }
+})
+
 module.exports = router
