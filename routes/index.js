@@ -15,7 +15,7 @@ router.get('/book', getBook)
 router.get('/book/:id', getBookById)
 router.put('/book', auth, changeBook)
 router.delete('/book', auth, deleteBook)
-router.user(swiper)
+router.use(swiper)
 router.use(user)
 router.use(category)
 
