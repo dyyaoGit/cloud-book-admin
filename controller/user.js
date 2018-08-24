@@ -7,12 +7,14 @@ const md5 = require('md5')
 
 let userSize = 10
 
-setInterval(() => {
+function getUserSize () {
     userModel.find({},{_id:1}).then(data => {
         userSize = data.length
         console.log(data.length, 'length');
     })
-}, 1000*60*10)
+}
+getUserSize()
+setInterval(getUserSize, 1000*60*10)
 
 
 router.post('/user', auth, async (req, res) => { // 添加管理员
