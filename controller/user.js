@@ -5,6 +5,14 @@ const auth = require('./auth')
 const {testPwd} = require('../util/index')
 const md5 = require('md5')
 
+let userSize = 10
+
+setInterval(() => {
+    userModel.find({},{_id:1}).then(data => {
+        userSize = data.length
+    })
+}, 1000*60*10)
+
 
 router.post('/user', auth, async (req, res) => { // 添加管理员
     let {username, avatar = '', desc = '', password, email, nickname} = req.body
@@ -99,7 +107,8 @@ router.get('/user', auth, async (req, res) => { // 获取管理员
         .skip((pn-1)*size)
     res.json({
         code: 200,
-        data
+        data,
+        count: userSize
     })
 })
 
