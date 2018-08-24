@@ -151,7 +151,7 @@ router.post('/category/:id/book/:bookid' , auth, async (req, res) => { // 添加
     }
 })
 
-router.delete('category/:id', async (req, res) => { // 删除一个分类
+router.delete('/category/:id', async (req, res) => { // 删除一个分类
     const {id} = req.params
 
     if(id){
