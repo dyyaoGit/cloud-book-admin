@@ -9,7 +9,7 @@ let userSize = 10
 
 function getUserSize () {
     userModel.find({},{_id:1}).then(data => {
-        userSize = data.length
+        userSize = data.length - 1
         console.log(data.length, 'length');
     })
 }
