@@ -125,7 +125,8 @@ router.post('/login', async (req, res) => { // 登录接口
                 username: userInfo.username,
                 email: userInfo.email,
                 avatar: userInfo.avatar,
-                desc: userInfo.desc
+                desc: userInfo.desc,
+                nickname: userInfo.nickname
             }
         })
     } else {
