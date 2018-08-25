@@ -58,7 +58,9 @@ exports.addBook = async (req, res) => {
 
 
 exports.getBook = async (req,res) => {
-    const {pn, size} = req.query
+    let {pn=1, size=10} = req.query
+    pn=parseInt(pn)
+    size=parseInt(size)
 
     const data = await book.find()
         .populate({path: 'type'})
