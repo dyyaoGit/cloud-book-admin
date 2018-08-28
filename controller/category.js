@@ -24,7 +24,9 @@ router.post('/category', auth, async (req, res, next) => { // 添加一条分类
 })
 
 router.get('/category', async (req, res) => { // 获取分类
-    const {pn = 1, size = 10} = req.query
+    let {pn = 1, size = 10} = req.query
+    pn=parseInt(pn)
+    size=parseInt(size)
 
     const data = await categoryModel
         .find()
