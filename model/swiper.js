@@ -15,6 +15,10 @@ const swiperSchema = mongoose.Schema({
     },
     img: {              //图片地址
         type: String
+    },
+    index: {
+        index: -1,
+        type: Number
     }
 },{versionKey: false, timestamp: {createdAt: "createTime", updatedAt: 'updateTime'}})
 
