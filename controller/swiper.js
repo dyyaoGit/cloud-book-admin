@@ -3,12 +3,25 @@ const router = Router()
 const bookModel = require('../model/book')
 const swiperModel = require('../model/swiper')
 
+let swiperCount = 0
+
+async function getCount() { // 获取轮播图的总数
+    let allData = await swiperModel.find({status: 1},{_id: 1})
+    console.log(allData)
+    console.log(allData.length)
+    swiperCount = allData.length
+    console.log(`swiperTotal:${swiperCount}`)
+}
+
+setInterval(getCount, 1000*60)
+
 router.post('/swiper',async (req, res) => { // 插入一张轮播图
     let {title, img, book, index = 1} = req.body
 
     index = parseInt(index)
     const bookItem = await bookModel.findById(book)
     await swiperModel.create({title, img, book: bookItem._id, index: index})
+    swiperCount++
     res.json({
         code: 200,
         msg: '轮播图插入成功'
@@ -30,7 +43,8 @@ router.get('/swiper', async (req, res) => { // 获取轮播图列表
 
     res.json({
         code: 200,
-        data
+        data,
+        count: swiperCount
     })
 })
 
@@ -67,10 +81,11 @@ router.put('/swiper/:id', async (req, res) => { // 修改某张轮播图
     }
 })
 
-router.post('/swiper/delete', async (req, res) => {
+router.post('/swiper/delete', async (req, res) => { // 删除轮播图
     try {
         const {ids} = req.body
         await swiperModel.updateMany({_id: {$in: ids}}, {$set: {status: 0}})
+        swiperCount--
         res.json({
             code: 200,
             msg: '删除成功'

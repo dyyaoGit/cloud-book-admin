@@ -19,7 +19,11 @@ const categorySchema = new mongoose.Schema({
             type: mongoose.SchemaTypes.ObjectId,
             ref: 'book'
         }
-    ]
+    ],
+    status: {
+        type: Number,
+        default: 1
+    }
 },{versionKey: false, timestamp: {createdAt: "createTime", updatedAt: 'updateTime'}})
 
 categorySchema.statics.findBookByType = function (options,cb) {
@@ -27,7 +31,7 @@ categorySchema.statics.findBookByType = function (options,cb) {
     const {booksSize, pn, size} = options
     console.log(options)
 
-    return this.find()
+    return this.find({status: 1})
         .skip((pn-1)*size)
         .limit(size)
         .sort({index: -1, _id: -1})

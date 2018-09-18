@@ -22,7 +22,7 @@ var book = new mongoose.Schema({
     type: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'category',
-        require: true
+        // require: true
     },
     looknums: {
         type: Number,

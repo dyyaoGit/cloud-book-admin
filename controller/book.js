@@ -8,7 +8,6 @@ const request = require("request")
 const rq = require("request-promise")
 const cheerio = require("cheerio")
 const mongoose = require('mongoose')
-
 const ObjectId = mongoose.Types.ObjectId
 
 exports.addBook = async (req, res) => {
@@ -57,12 +56,12 @@ exports.addBook = async (req, res) => {
 }
 
 
-exports.getBook = async (req,res) => {
+exports.getBook = async (req,res) => { // 书籍列表
     let {pn=1, size=10} = req.query
     pn=parseInt(pn)
     size=parseInt(size)
 
-    const data = await book.find()
+    const data = await book.find({status: 1})
         .populate({path: 'type'})
         .sort({index: -1, _id:-1})
         .limit(size)
