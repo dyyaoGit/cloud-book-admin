@@ -110,15 +110,17 @@ exports.changeBook = async (req,res) => { // 修改书籍
     })
 }
 
-exports.deleteBook = async (req, res) => { // 删除书籍
+exports.deleteBook = async (req, res) => { // 删除书籍, 逻辑，删除书对应的分类记录，轮播图记录，保留书籍数据。更改书籍status
     let {id} = req.params
 
     let bookItem = await book.findById(id) // 找到一本书
-    await titleModel.remove({bookId: bookItem._id}) // 找到该书对应的所有标题
-    await article.remove({bookId: bookItem._id}) // 删除所有的文章
+    // await titleModel.remove({bookId: bookItem._id}) // 找到该书对应的所有标题
+    // await article.remove({bookId: bookItem._id}) // 删除所有的文章
+    await bookItem.set({status: 0})
     await category.updateOne({_id: bookItem.type}, {$pull: {books: bookItem._id}}) //删除对应分类中的记录
     await swiperModel.remove({book: bookItem._id}) // 删除对应轮播图当中的书
-    await bookItem.remove()
+    // await bookItem.remove()
+    await bookItem.save()
     res.json({
         code: 200,
         msg: '删除书籍成功'
