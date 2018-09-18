@@ -5,6 +5,17 @@ const bookModel = require('../model/book')
 const auth = require('./auth')
 const router = Router()
 
+let categoryCount = 0
+
+async function getCount() {
+    let allData = await categoryModel.find({},{_id: 1})
+    console.log(allData)
+    console.log(allData.length)
+    categoryCount = allData.length
+    console.log(`total${categoryCount}`)
+}
+
+setInterval(getCount, 1000*60)
 
 router.post('/category', auth, async (req, res, next) => { // 添加一条分类
     let {title, icon} = req.body
@@ -36,7 +47,8 @@ router.get('/category', async (req, res) => { // 获取分类
 
     res.json({
         code: 200,
-        data
+        data,
+        count: categoryCount
     })
 })
 
