@@ -41,7 +41,7 @@ router.get('/category', async (req, res) => { // 获取分类
     size=parseInt(size)
 
     const data = await categoryModel
-        .find({status: 1})
+        .find()
         .sort({index: -1, _id: -1})
         .limit(size)
         .skip((pn - 1) * size)
@@ -132,7 +132,7 @@ router.delete('/category/:id/book/:bookid' , auth, async (req, res) => { // 删�
 
     try {
         await categoryModel.updateOne({_id: id}, {$pull: {books: ObjectId(bookid)}})
-        await bookModel.updateOne({_id: bookid}, {$set: {type: null}})
+        await bookModel.updateOne({_id: bookid}, {$set: {type: null}}) // 更新相应的数的分类内容为该图书
         res.json({
             code: 200,
             msg: '删除成功'
@@ -170,11 +170,10 @@ router.post('/category/:id/book/:bookid' , auth, async (req, res) => { // 添加
 router.delete('/category/:id', async (req, res) => { // 删除一个分类
     const {id} = req.params
 
-    if(id){ // 原有逻辑，直接删除数据
+    if(id){
         const categoryItem =  await categoryModel.findById(id)
         if(categoryItem.books&&categoryItem.books.length == 0){
-            // const removeData = await categoryItem.remove()
-            const removeData = await categoryItem.set({status: 0})
+            const removeData = await categoryItem.remove()
             await categoryItem.save()
             console.log(removeData)
             res.json({
@@ -194,7 +193,6 @@ router.delete('/category/:id', async (req, res) => { // 删除一个分类
             msg: '缺少必要参数'
         })
     }
-
 })
 
 module.exports = router
