@@ -34,7 +34,11 @@ var book = new mongoose.Schema({
     },
     like_this_users: [{
         type: mongoose.SchemaTypes.ObjectId
-    }]
+    }],
+    status: {
+        type: Number,
+        default: 1
+    }
 },{versionKey: false, timestamps: {createdAt: "createTime", updatedAt: 'updateTime'}})
 
 
