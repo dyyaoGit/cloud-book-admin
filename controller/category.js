@@ -161,6 +161,7 @@ router.delete('/category/:id', async (req, res) => { // 删除一个分类
         if(categoryItem.books&&categoryItem.books.length == 0){
             const removeData = await categoryItem.remove()
             await categoryItem.save()
+            console.log(removeData)
             res.json({
                 code: 200,
                 msg: `成功删除${removeData.n}个分类`
