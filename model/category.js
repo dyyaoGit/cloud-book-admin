@@ -31,7 +31,7 @@ categorySchema.statics.findBookByType = function (options,cb) {
     const {booksSize, pn, size} = options
     console.log(options)
 
-    return this.find({status: 1})
+    return this.find()
         .skip((pn-1)*size)
         .limit(size)
         .sort({index: -1, _id: -1})
