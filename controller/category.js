@@ -132,7 +132,7 @@ router.delete('/category/:id/book/:bookid' , auth, async (req, res) => { // 删�
 
     try {
         await categoryModel.updateOne({_id: id}, {$pull: {books: ObjectId(bookid)}})
-        await bookModel.updateOne({_id: bookid}, {$set: {type: null}}) // 更新相应的数的分类内容为该图书
+        await bookModel.updateOne({_id: bookid}, {$set: {type: null}}) // 删除书中的分类内容
         res.json({
             code: 200,
             msg: '删除成功'
