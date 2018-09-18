@@ -16,9 +16,13 @@ const swiperSchema = mongoose.Schema({
     img: {              //图片地址
         type: String
     },
-    index: {
+    index: {      // 轮播图排序
         index: -1,
         type: Number
+    },
+    status: { // 是否搜索该轮播图
+        type: Number,
+        default: 1
     }
 },{versionKey: false, timestamp: {createdAt: "createTime", updatedAt: 'updateTime'}})
 

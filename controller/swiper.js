@@ -22,7 +22,7 @@ router.get('/swiper', async (req, res) => { // 获取轮播图列表
     size=parseInt(size)
 
     const data = await swiperModel
-        .find()
+        .find({status: 1})
         .sort({index: -1, _id: -1})
         .skip((pn-1)*size)
         .limit(size)
@@ -65,8 +65,19 @@ router.put('/swiper/:id', async (req, res) => { // 修改某张轮播图
             msg: '没有找到对应的图书'
         })
     }
-
 })
 
+router.post('/swiper/delete', async (req, res) => {
+    try {
+        const {ids} = req.body
+        await swiperModel.updateMany({_id: {$in: ids}}, {$set: {status: 0}})
+        res.json({
+            code: 200,
+            msg: '删除成功'
+        })
+    } catch (err) {
+        next(err)
+    }
+})
 
 module.exports = router
