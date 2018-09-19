@@ -89,7 +89,8 @@ router.get('/category/:typeId/books', async (req, res) => { // 获取某分类�
     pn = parseInt(pn)
     size = parseInt(size)
 
-
+    const categoryData = await categoryModel.findById(typeId)
+    const count = categoryData.books.length
     const data = await categoryModel
         .findById(typeId)
         .populate({
@@ -103,7 +104,8 @@ router.get('/category/:typeId/books', async (req, res) => { // 获取某分类�
 
     res.json({
         code: 200,
-        data
+        data,
+        count
     })
 
 })

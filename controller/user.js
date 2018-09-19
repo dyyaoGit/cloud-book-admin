@@ -115,7 +115,7 @@ router.get('/user', auth, async (req, res) => { // 获取管理员
     })
 })
 
-router.get('/user/:id', auth, async (req, res) => { // 获取单个管理员
+router.get('/user/:id', auth, async (req, res, next) => { // 获取单个管理员
     try {
         const id = req.params.id
 
