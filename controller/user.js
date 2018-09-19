@@ -115,6 +115,20 @@ router.get('/user', auth, async (req, res) => { // 获取管理员
     })
 })
 
+router.get('/user/:id', auth, async (req, res) => { // 获取单个管理员
+    try {
+        const id = req.params.id
+
+        const data = await userModel.findById(id)
+        res.json({
+            code: 200,
+            data
+        })
+    } catch(err){
+        next(err)
+    }
+})
+
 router.post('/login', async (req, res) => { // 登录接口
     const {username, password} = req.body
     const userInfo = await userModel.findOne({username})
