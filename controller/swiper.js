@@ -84,11 +84,12 @@ router.put('/swiper/:id', async (req, res) => { // 修改某张轮播图
 router.post('/swiper/delete', async (req, res) => { // 删除轮播图
     try {
         const {ids} = req.body
-        await swiperModel.updateMany({_id: {$in: ids}}, {$set: {status: 0}})
+        const deleteData = await swiperModel.updateMany({_id: {$in: ids}}, {$set: {status: 0}})
         swiperCount--
         res.json({
             code: 200,
-            msg: '删除成功'
+            msg: '删除成功',
+            deleteData
         })
     } catch (err) {
         next(err)
