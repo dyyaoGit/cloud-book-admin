@@ -119,7 +119,7 @@ router.get('/user/:id', auth, async (req, res) => { // 获取单个管理员
     try {
         const id = req.params.id
 
-        const data = await userModel.findById(id)
+        const data = await userModel.findById(id, "-password") // 不展示密码
         res.json({
             code: 200,
             data
