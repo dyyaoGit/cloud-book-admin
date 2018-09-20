@@ -153,7 +153,7 @@ router.post('/category/:id/book/:bookid' , auth, async (req, res) => { // 添加
 
     try {
         if(!id&&!bookid) throw new Error('缺少必要参数')
-        await categoryModel.updateOne({_id: id}, {$push: {books: ObjectId(bookid)}}) // 更新该分类
+        await categoryModel.updateOne({_id: id}, {$addToSet: {books: ObjectId(bookid)}}) // 更新该分类
         await bookModel.updateOne({_id: bookid}, {$set: {type: ObjectId(id)}}) // 更新相应的数的分类内容为该图书
 
         res.json({
