@@ -18,5 +18,8 @@ router.delete('/book/:id', auth, deleteBook)
 router.use(swiper)
 router.use(user)
 router.use(category)
+router.get('/test', function (req, res) {
+    res.send('这是测试接口')
+})
 
 module.exports = router;
